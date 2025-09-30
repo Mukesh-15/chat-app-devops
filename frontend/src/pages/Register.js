@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import API from "../api";
-import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
 
 export default function Register() {
-  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -20,8 +19,8 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await API.post("/signup", form);
-      login(res.data.user, res.data.token);
+      await API.post("/signup", form);
+      alert("Registration successful! Please log in.");
       navigate("/login");
     } catch (err) {
       alert(err.response?.data?.message || "Registration failed");
@@ -29,48 +28,56 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-purple-500">
-      <div className="bg-white p-8 rounded-xl shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Create Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Sign Up
-          </button>
-        </form>
-        <p className="text-sm text-gray-600 text-center mt-4">
-          Already have an account?{" "}
-          <span
-            className="text-blue-600 cursor-pointer"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </span>
-        </p>
-      </div>
-    </div>
+    <AuthLayout 
+        title='Create Account' 
+        subtitle='Join VibeNest today and start connecting with others.'
+    >
+      <form onSubmit={handleSubmit} className="auth-form-container">
+        <div className="form-group">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+        </div>
+        <div className="form-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+        </div>
+        <div className="form-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+        </div>
+        <button
+          type="submit"
+          className="form-button" style={{ backgroundColor: '#3B82F6' }} // Match Register button color
+        >
+          Sign Up
+        </button>
+      </form>
+      <p className="form-footer-link">
+        Already have an account?{" "}
+        <span
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </span>
+      </p>
+    </AuthLayout>
   );
 }

@@ -2,15 +2,13 @@ import React, { useState, useContext } from "react";
 import API from "../api";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,41 +26,59 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-purple-500 to-blue-400">
-      <div className="bg-white p-8 rounded-xl shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Welcome Back</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition"
-          >
-            Login
-          </button>
-        </form>
-        <p className="text-sm text-gray-600 text-center mt-4">
-          Don’t have an account?{" "}
-          <span
-            className="text-purple-600 cursor-pointer"
-            onClick={() => navigate("/register")}
-          >
-            Register
-          </span>
-        </p>
-      </div>
-    </div>
+    <AuthLayout 
+        title='Welcome Back' 
+        subtitle='Login to VibeNest to continue connecting with your friends.'
+    >
+      {/* Form elements use the new standard CSS classes */}
+      <form onSubmit={handleSubmit} className="auth-form-container">
+        <div className="form-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+        </div>
+        <div className="form-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+        </div>
+        <button
+          type="submit"
+          className="form-button"
+        >
+          Login
+        </button>
+      </form>
+      
+      <div className="form-separator">OR</div>
+
+      <p className="form-footer-link">
+        <span
+          style={{ color: '#3B82F6' }} // Custom link color for OTP
+          onClick={() => navigate("/request-otp")}
+        >
+          Login with OTP
+        </span>
+      </p>
+      
+      <p className="form-footer-link" style={{ marginTop: '10px' }}>
+        Don’t have an account?{" "}
+        <span
+          onClick={() => navigate("/register")}
+        >
+          Register
+        </span>
+      </p>
+    </AuthLayout>
   );
 }
