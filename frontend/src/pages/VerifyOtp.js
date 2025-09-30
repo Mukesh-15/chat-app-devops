@@ -1,80 +1,53 @@
-import React, { useState, useContext, useEffect } from "react";
-import API from "../api";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
-import AuthLayout from "../components/AuthLayout";
+import React, { useState } from "react";
+import apiFetch from "../api";
+import "./VerifyOtp.css";
 
-export default function VerifyOtp() {
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  const userEmail = location.state?.email; 
+export default function VerifyOtp({ active, onClose }) {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-      if (!userEmail) {
-          navigate("/request-otp");
-      }
-  }, [userEmail, navigate]);
+  if (!active) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await API.post("/auth/verify-otp", { email: userEmail, otp }); 
-      login(res.data.user, res.data.token);
-      navigate("/");
+      const res = await apiFetch("verify-otp", { method: "POST", body: JSON.stringify({ otp }) });
+      alert(res.message || "OTP verified successfully");
+      onClose();
     } catch (err) {
-      alert(err.response?.data?.message || "OTP verification failed. Please try again.");
+      alert(err.message || "OTP verification failed");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!userEmail) return null; 
+  const resendOtp = async () => {
+    try {
+      const res = await apiFetch("send-otp", { method: "POST" });
+      alert(res.message || "OTP resent successfully");
+    } catch (err) {
+      alert(err.message || "Failed to resend OTP");
+    }
+  };
 
   return (
-    <AuthLayout 
-        title='Verify Code' 
-        subtitle={`Enter the 6-digit code sent to ${userEmail}.`}
-    >
-      <form onSubmit={handleSubmit} className="auth-form-container">
-        <p className="form-footer-link" style={{ marginBottom: '20px', color: '#666', fontWeight: 'normal' }}>
-          Enter the code below to complete your login.
-        </p>
-        <div className="form-group">
-            <input
-              type="text"
-              name="otp"
-              placeholder="6-digit Code"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              maxLength="6"
-              className="form-input"
-              style={{ textAlign: 'center', fontSize: '1.2rem', letterSpacing: '2px' }} // Custom style for OTP visual
-              required
-            />
+    <div className="otp-overlay">
+      <div className="otp-container">
+        <div className="otp-box">
+          <div className="otp-header">
+            <h2>OTP Verification</h2>
+            <p>We’ve sent a 6-digit code to your email. Please enter it below.</p>
+          </div>
+          <form className="otp-form" onSubmit={handleSubmit}>
+            <input type="text" maxLength="6" inputMode="numeric" placeholder="Enter 6-digit OTP" className="otp-input" required value={otp} onChange={(e) => setOtp(e.target.value)} />
+            <button type="submit" className="otp-button" disabled={loading}>{loading ? "Verifying..." : "Verify OTP"}</button>
+          </form>
+          <p className="otp-resend">
+            Didn’t receive the code? <button className="otp-resend-btn" onClick={resendOtp}>Resend</button>
+          </p>
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="form-button"
-        >
-          {loading ? "Verifying..." : "Verify Code"}
-        </button>
-      </form>
-
-      <p className="form-footer-link" style={{ marginTop: '20px' }}>
-        Didn't receive the code?{" "}
-        <span
-          style={{ color: '#3B82F6' }} // Custom link color for Resend
-          onClick={() => navigate("/request-otp")}
-        >
-          Resend OTP
-        </span>
-      </p>
-    </AuthLayout>
+      </div>
+    </div>
   );
 }

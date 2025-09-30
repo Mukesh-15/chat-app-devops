@@ -7,17 +7,9 @@ const cors = require('cors');
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
-});
-
-const onlineUsers = new Map();
+const io = new Server(server, { cors: { origin: '*', methods: ['GET','POST'] } });
 
 connectToMongo();
-
 app.set("io", io);
 
 app.use(express.json());
@@ -38,6 +30,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5500, () => {
-  console.log('Server running at http://localhost:5500');
-});
+server.listen(5500, () => console.log('Server running at http://localhost:5500'));

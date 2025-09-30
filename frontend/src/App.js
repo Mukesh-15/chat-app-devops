@@ -7,7 +7,6 @@ import { AuthProvider, AuthContext } from "./context/AuthContext";
 // Import all pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import RequestOtp from "./pages/RequestOtp"; 
 import VerifyOtp from "./pages/VerifyOtp";
 import Home from "./pages/Home"; 
 
@@ -36,7 +35,6 @@ export default function App() {
           <Route path="/" element={<Login />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/request-otp" element={<RequestOtp />} /> 
           <Route path="/verify-otp" element={<VerifyOtp />} />
           
           {/* Authenticated Route */}

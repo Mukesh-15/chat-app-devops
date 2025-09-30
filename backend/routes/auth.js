@@ -39,7 +39,7 @@ router.post("/send-otp", verifyToken, async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Your OTP Code",
-      html: `<h2>Your OTP is: ${rawOtp}</h2><p>This expires in 5 minutes.</p>`,
+      html: `<h2>Your OTP is: ${rawOtp}</h2><p>This expires in 5 minutes.</p> </br> <h1>Pani chesthundhi chellammaaaaaaaaaaaaaaa</h1>`,
     };
 
     await transporter.sendMail(mailOptions);
