@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ status: false, error: "Please authenticate using a valid token" });
   }
-  console.log(`Verifying token: ${token}`);
+ 
   try {
     const data = jwt.verify(token, JWT_SECRET);
     req.user = data.user;
