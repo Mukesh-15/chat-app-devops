@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import apiFetch from "../api";
 import "./VerifyOtp.css";
+import { useNavigate } from "react-router-dom";
 
 export default function VerifyOtp({ active, onClose }) {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   if (!active) return null;
 
   const handleSubmit = async (e) => {
@@ -14,7 +15,8 @@ export default function VerifyOtp({ active, onClose }) {
     try {
       const res = await apiFetch("verify-otp", { method: "POST", body: JSON.stringify({ otp }) });
       alert(res.message || "OTP verified successfully");
-      onClose();
+      onClose();  
+      navigate("/");
     } catch (err) {
       alert(err.message || "OTP verification failed");
     } finally {

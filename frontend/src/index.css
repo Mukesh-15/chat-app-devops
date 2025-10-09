@@ -170,3 +170,25 @@ body {
         width: 55%; 
     }
 }
+
+@media (max-width: 768px) {
+  .chatlist {
+    display: none;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .chatbox-header h2 {
+    font-size: 16px;
+  }
+
+  .chatbox-messages {
+    padding: 12px;
+  }
+
+  .chatbox-input input {
+    font-size: 14px;
+  }
+}

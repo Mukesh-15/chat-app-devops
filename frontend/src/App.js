@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Home from "./pages/Home"; 
+import Logout from "./pages/Logout";
 
 // Simple Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -32,11 +33,11 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Authentication Routes */}
-          <Route path="/" element={<Login />} /> 
+          <Route path="/" element={<Home />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
-          
+          <Route exact path="/logout" element={<Logout/>}></Route>
           {/* Authenticated Route */}
           <Route 
             path="/home" 
