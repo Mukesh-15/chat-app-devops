@@ -3,14 +3,14 @@ pipeline {
 
     environment {
         PROJECT_DIR = "${WORKSPACE}"
-        ENV_FILE = ".env"  // Change to .env.prod if needed
+        ENV_FILE = ".env"       // Change to .env.prod if needed
         DOCKER_COMPOSE = "docker-compose"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Mukesh-15/chat-app-devops.git'
+                checkout scm
             }
         }
 
@@ -60,7 +60,7 @@ pipeline {
             echo "✅ Chat app deployed successfully!"
         }
         failure {
-            echo "❌ Deployment failed. Check logs."
+            echo "❌ Deployment failed. Check logs!"
         }
     }
 }
