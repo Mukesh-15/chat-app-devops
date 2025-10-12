@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: chat-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: chat-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5600:5500"   # Avoid conflicts
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: chat-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+volumes:
+  mongo-data:
+
+networks:
+  chat-network:
+    driver: bridge
