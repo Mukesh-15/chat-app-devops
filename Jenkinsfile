@@ -2,57 +2,65 @@ pipeline {
     agent any
 
     environment {
-        // Set Node.js version or PATH if needed
-        NODE_ENV = "production"
+        PROJECT_DIR = "${WORKSPACE}"
+        ENV_FILE = ".env"  // Change to .env.prod if needed
+        DOCKER_COMPOSE = "docker-compose"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Pull latest code from GitHub
                 git branch: 'main', url: 'https://github.com/Mukesh-15/chat-app-devops.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Prepare Environment') {
             steps {
-                dir('backend') {
-                    sh 'npm install'
-                }
-                dir('frontend') {
-                    sh 'npm install'
+                // Copy environment file to backend
+                bat "copy ${ENV_FILE} backend\\.env /Y"
+            }
+        }
+
+        stage('Build and Deploy Containers') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    // Stop existing containers
+                    bat "${DOCKER_COMPOSE} down"
+
+                    // Build and start containers in detached mode
+                    bat "${DOCKER_COMPOSE} up --build -d"
                 }
             }
         }
 
-        stage('Build Frontend') {
+        stage('Wait for MongoDB') {
             steps {
-                dir('frontend') {
-                    sh 'npm run build'
-                }
+                bat """
+                :waitmongo
+                docker exec chat-mongo mongo --eval "db.getName()" >nul 2>&1
+                if errorlevel 1 (
+                    echo Waiting for MongoDB...
+                    timeout /t 5
+                    goto waitmongo
+                )
+                echo MongoDB is ready!
+                """
             }
         }
 
-        stage('Run Backend Tests') {
+        stage('Verify Deployment') {
             steps {
-                dir('backend') {
-                    sh 'npm test || echo "No tests configured"'
-                }
-            }
-        }
-
-        stage('Start Server') {
-            steps {
-                dir('backend') {
-                    sh 'npm start &'
-                }
+                bat "docker ps"
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline finished!'
+        success {
+            echo "✅ Chat app deployed successfully!"
+        }
+        failure {
+            echo "❌ Deployment failed. Check logs."
         }
     }
 }
