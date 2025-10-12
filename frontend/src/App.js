@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Home from "./pages/Home"; 
 import Logout from "./pages/Logout";
+import AddFriends from "./pages/AddFriends";
 
 // Simple Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route exact path="/logout" element={<Logout/>}></Route>
+          <Route exact path="/addFriends" element={<AddFriends/>}></Route>
           {/* Authenticated Route */}
           <Route 
             path="/home" 
