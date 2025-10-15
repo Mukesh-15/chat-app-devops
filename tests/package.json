@@ -1,0 +1,17 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:chat": "mocha ./chat.test.js --timeout 20000"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chai": "^6.2.0",
+    "chromedriver": "^141.0.2",
+    "mocha": "^11.7.4",
+    "selenium-webdriver": "^4.36.0"
+  }
+}
