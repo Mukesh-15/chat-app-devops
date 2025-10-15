@@ -17,9 +17,8 @@ export default function AddFriends() {
         });
 
         const data = await res.json();
-        console.log("Fetched data:", data); // ✅ Check what API returns
+        console.log("Fetched data:", data); 
 
-        // ✅ Safely set users (in case data is wrapped in an object)
         if (Array.isArray(data)) {
           setUsers(data);
         } else if (Array.isArray(data.users)) {
@@ -29,7 +28,7 @@ export default function AddFriends() {
         }
       } catch (err) {
         console.error("Error fetching users:", err);
-        setUsers([]); // Avoid map error if request fails
+        setUsers([]);
       }
     };
 

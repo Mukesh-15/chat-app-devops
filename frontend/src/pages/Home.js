@@ -14,7 +14,7 @@ export default function Home() {
   const [currFrnd, setCurrFrnd] = useState("");
   const [id, setId] = useState("100");
   const [users, setUsers] = useState([]);
-  const [frndName, setFrndName] = useState("Meo Chat");
+  const [frndName, setFrndName] = useState("VibeNest Chat");
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/login");

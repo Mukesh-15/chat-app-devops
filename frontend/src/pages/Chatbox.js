@@ -109,6 +109,7 @@ const ChatBox = ({ currFrnd, socket, frndName }) => {
       <form className="chatbox-input" onSubmit={handleClick}>
         <ion-icon name="happy-outline" class="emoji-icon" />
         <input
+          name="msgbox"
           placeholder="Your message"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
