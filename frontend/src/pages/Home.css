@@ -1,6 +1,83 @@
 .home {
   display: flex;
   height: 100vh;
-  background-color: #dbeafe;
-  overflow: hidden;
+  width: 100%;
+  background: #f7f8fa;
+  position: relative;
+}
+
+/* Sidebar fixed at left for desktop */
+.sidebar {
+  width: 80px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+}
+
+.chatlist-wrapper {
+  width: 300px;
+  border-right: 1px solid #ddd;
+  transition: transform 0.3s ease;
+}
+
+.chatbox {
+  flex: 1;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 768px) {
+  .home {
+    flex-direction: column;
+  }
+
+  /* Sidebar → Bottom bar */
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    border-top: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 20;
+  }
+
+  .sidebar .avatar {
+    display: none;
+  }
+
+  .sidebar-icons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    font-size: 1.6rem;
+  }
+
+  /* ChatList hidden initially */
+  .chatlist-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 85%;
+    height: 100%;
+    background: white;
+    transform: translateX(-100%);
+    z-index: 25;
+    border-right: 1px solid #ddd;
+    transition: transform 0.3s ease;
+  }
+
+  /* When message icon clicked */
+  .chatlist-wrapper.show {
+    transform: translateX(0);
+  }
+
+  .chatbox {
+    flex: 1;
+    width: 100%;
+    height: calc(100vh - 65px);
+    padding-bottom: 65px; /* to avoid overlap with bottom bar */
+  }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import apiFetch from "../api";
 import "./AddFriends.css";
 
 export default function AddFriends() {
@@ -8,15 +9,10 @@ export default function AddFriends() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5500/users", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
+        const res = await apiFetch("users", {
+          method: "GET"
         });
-
-        const data = await res.json();
+        const data = res;
         console.log("Fetched data:", data); 
 
         if (Array.isArray(data)) {

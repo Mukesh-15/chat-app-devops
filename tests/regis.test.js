@@ -23,7 +23,7 @@ const chrome = require("selenium-webdriver/chrome");
     const submitButton = await driver.findElement(By.css('button[type="submit"]'));
 
     console.log("Filling registration form...");
-    await usernameInput.sendKeys("seleniumTestUser10");
+    await usernameInput.sendKeys("Mukie_Doodapaka");
     await emailInput.sendKeys("doodapakamukesh@gmail.com");
     await passwordInput.sendKeys("Test@1234");
 

@@ -1,27 +1,22 @@
 // ChatBox.js
 import { useEffect, useState } from "react";
 import "./ChatBox.css";
+import apiFetch from "../api";
 
 const ChatBox = ({ currFrnd, socket, frndName }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const [userId, setUserId] = useState("");
   const [roomId, setRoomId] = useState("");
   const [msg, setMsg] = useState("");
+  
 
   useEffect(() => {
     const fetchChatHistory = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:5500/users/messages/${currFrnd}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const data = await res.json();
+        const res = await apiFetch(`users/messages/${currFrnd}`, {
+          method: "GET"
+        });
+        const data = res;
         setChatHistory(data.messages);
         setUserId(data.yourId);
 
