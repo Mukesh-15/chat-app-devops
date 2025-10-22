@@ -1,5 +1,5 @@
 // ChatBox.js
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./ChatBox.css";
 import apiFetch from "../api";
 import { useContext } from "react";
@@ -13,6 +13,14 @@ const ChatBox = ({ currFrnd, frndName }) => {
 
   const [callActive, setCallActive] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
+  const divRef = useRef();
+
+  const scrollToElement = () => {
+    const { current } = divRef;
+    if (current !== null) {
+      current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const fetchChatHistory = async () => {
@@ -27,6 +35,7 @@ const ChatBox = ({ currFrnd, frndName }) => {
         const room = [data.yourId, currFrnd].sort().join("_");
         setRoomId(room);
         socket.emit("join-room", room);
+        setTimeout(scrollToElement, 100);
       } catch (err) {
         console.error("Error fetching chat history:", err);
       }
@@ -38,7 +47,9 @@ const ChatBox = ({ currFrnd, frndName }) => {
   useEffect(() => {
     const handleIncomingMsg = (data) => {
       setChatHistory((prev) => [...prev, data]);
+      setTimeout(scrollToElement, 100); // auto scroll to last msg
     };
+
     if (getRoomId) socket.on("send-message", handleIncomingMsg);
     return () => socket.off("send-message", handleIncomingMsg);
   }, [getRoomId, socket]);
@@ -73,6 +84,7 @@ const ChatBox = ({ currFrnd, frndName }) => {
         }),
       });
       setMsg("");
+      setTimeout(scrollToElement, 100);
     } catch (err) {
       console.error("Error sending message:", err);
     }
@@ -132,6 +144,7 @@ const ChatBox = ({ currFrnd, frndName }) => {
             </div>
           )
         )}
+        <div className="bottom-msg" ref={divRef}></div>
       </div>
 
       {callActive && (
