@@ -1,4 +1,3 @@
-// ChatBox.js
 import { useEffect, useRef, useState } from "react";
 import "./ChatBox.css";
 import apiFetch from "../api";
