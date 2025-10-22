@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import ChatList from "./Chatlist";
 import ChatBox from "./Chatbox";
-import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import apiFetch from "../api";
 import "./Home.css";
 
-const socket = io.connect("http://localhost:5500");
 
 export default function Home() {
   const navigate = useNavigate();
@@ -52,7 +50,7 @@ export default function Home() {
         />
       </div>
 
-      <ChatBox currFrnd={currFrnd} socket={socket} frndName={frndName} />
+      <ChatBox currFrnd={currFrnd} frndName={frndName} />
     </div>
   );
 }

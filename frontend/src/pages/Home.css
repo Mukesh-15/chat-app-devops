@@ -14,7 +14,7 @@
 }
 
 .chatlist-wrapper {
-  width: 300px;
+  width: 320px;
   border-right: 1px solid #ddd;
   transition: transform 0.3s ease;
 }

@@ -75,7 +75,7 @@ export default function AddFriends() {
               <div key={user._id} className="friend-card">
                 <div className="friend-info">
                   <img
-                    src={`https://i.pravatar.cc/150?u=${user._id}`}
+                    src={`https://imgs.search.brave.com/q-QoMPyZHgH3putURkfCdIQMa5Bg8luup8qs3GjbpQs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvdXNlci1wcm9m/aWxlLWljb24tY2ly/Y2xlXzEyNTYwNDgt/MTI0OTkuanBnP3Nl/bXQ9YWlzX2h5YnJp/ZCZ3PTc0MCZxPTgw`}
                     alt={user.username}
                     className="friend-avatar"
                   />
