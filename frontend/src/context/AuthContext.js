@@ -1,19 +1,18 @@
-import React, { createContext, useState, useEffect } from 'react'; // <-- FIX: useState added here
+import React, { createContext, useState, useEffect } from 'react'; 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // FIX: useState is now correctly imported and used
+
   const [user, setUser] = useState(null); 
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user/token from localStorage on initial load
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
     
-    // FIX for "undefined is not a valid json": Robust checks added
+
     const isValidUser = storedUser && storedUser !== 'undefined' && storedUser !== '';
     const isValidToken = storedToken && storedToken !== 'undefined' && storedToken !== '';
 
@@ -28,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       }
     }
     setLoading(false);
-  }, []); // Empty dependency array means it runs once on mount
+  }, []);
 
   const login = (userData, tokenData) => {
     setUser(userData);
